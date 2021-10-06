@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume(){
         super.onResume();
-        // 情報を取得するセンサーの設定(今回は加速度センサを取得)
+        // 情報を取得するセンサーの設定(今回は地磁気センサを取得)
         List<Sensor> sensors = manager.getSensorList(Sensor.TYPE_MAGNETIC_FIELD);
         Sensor sensor = sensors.get(0);
         // センサーからの情報の取得を開始
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     // センサーイベント受信時に呼ばれるコールバック関数
     public void onSensorChanged(SensorEvent event){
-        // 取得した情報が加速度センサーからのものか確認
+        // 取得した情報が地磁気センサーからのものか確認
         if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
             // 受け取った情報を格納用の配列にコピー
             values = event.values.clone();
