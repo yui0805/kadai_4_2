@@ -19,9 +19,20 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-public class MainActivity extends AppCompatActivity {
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.view.WindowManager;
+import android.widget.TextView;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private LineChart mLineChart;
+    // センサーマネージャを定義
+    private SensorManager manager;
 
     // グラフに表示するデータに関する値を定義
     private int num; // グラフにプロットするデータの数
@@ -30,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private int[] colors; // グラフにプロットする点の色を格納する配列
     private float max, min; // グラフのY軸の最大値と最小値
 
-    private float[] values; // データを格納する配列
+    private float[] values ; // データを格納する配列
 
     // 値をプロットするx座標
     private float count = 0;
@@ -77,7 +88,39 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        // センサーを制御するための変数の初期化
+        manager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
     }
+    // アプリケーション開始時に呼ばれるコールバック関数
+    @Override
+    protected void onResume(){
+        super.onResume();
+        // 情報を取得するセンサーの設定(今回は地磁気センサを取得)
+        List<Sensor> sensors = manager.getSensorList(Sensor.TYPE_MAGNETIC_FIELD);
+        Sensor sensor = sensors.get(0);
+        // センサーからの情報の取得を開始
+        manager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    // アプリケーション一時停止時に呼ばれるコールバック関数
+    @Override
+    protected void onPause(){
+        super.onPause();
+        // センサのリスナー登録解除
+        manager.unregisterListener(this);
+    }
+    // センサーイベント受信時に呼ばれるコールバック関数
+    public void onSensorChanged(SensorEvent event){
+        // 取得した情報が地磁気センサーからのものか確認
+        if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+            // 受け取った情報を格納用の配列にコピー
+            values = event.values.clone();
+
+        }
+    }
+    // センサーの精度の変更時に呼ばれるコールバック関数(今回は何もしない)
+    public void onAccuracyChanged(Sensor sensor, int accuracy){}
 
     /** グラフViewの初期化 **/
 
