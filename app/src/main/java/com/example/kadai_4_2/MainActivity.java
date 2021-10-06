@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         labels = new String[num];
         colors = new int[num];
 
-        labels[0] = "加速度 X軸";
-        labels[1] = "加速度 Y軸";
-        labels[2] = "加速度 Z軸";
+        labels[0] = "X軸方向の地磁気強度";
+        labels[1] = "Y軸方向の地磁気強度";
+        labels[2] = "Z軸方向の地磁気強度";
 
         colors[0] = Color.rgb(0xFF, 0x00, 0x00); // 赤
         colors[1] = Color.rgb(0x00, 0xFF, 0x00); // 緑
