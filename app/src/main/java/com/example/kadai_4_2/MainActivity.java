@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume(){
         super.onResume();
-        // 情報を取得するセンサーの設定(今回は地磁気センサを取得)
-        List<Sensor> sensors = manager.getSensorList(Sensor.TYPE_MAGNETIC_FIELD);
+        // 情報を取得するセンサーの設定(今回は加速度センサを取得)
+        List<Sensor> sensors = manager.getSensorList(Sensor.TYPE_ACCELEROMETER);
         Sensor sensor = sensors.get(0);
         // センサーからの情報の取得を開始
         manager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     // センサーイベント受信時に呼ばれるコールバック関数
     public void onSensorChanged(SensorEvent event){
-        // 取得した情報が地磁気センサーからのものか確認
-        if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+        // 取得した情報が加速度センサーからのものか確認
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
             // 受け取った情報を格納用の配列にコピー
             values = event.values.clone();
 
